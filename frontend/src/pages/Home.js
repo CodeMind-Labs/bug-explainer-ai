@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import InputBox from "../components/InputBox";
 import ResultTabs from "../components/ResultTabs";
 import Loader from "../components/Loader";
+import { FiAlertCircle } from "react-icons/fi";
 
 const Home = () => {
   const [errorText, setErrorText] = useState("");
@@ -64,14 +65,25 @@ const Home = () => {
   };
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <div className="mb-8 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-500 p-8 text-white shadow-xl">
-        <h1 className="text-3xl font-bold md:text-5xl">Bug Explainer AI</h1>
-        <p className="mt-3 max-w-2xl text-sm md:text-base">
-          Paste your error message and get a beginner-friendly explanation, fix suggestion, and learning insight.
-        </p>
+    <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      {/* Hero Section */}
+      <div className="mb-12 rounded-3xl bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600 p-8 sm:p-12 text-white shadow-2xl animate-fade-in relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20" />
+        <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/10 rounded-full -ml-20 -mb-20" />
+
+        <div className="relative z-10">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
+            Bug Explainer AI
+          </h1>
+          <p className="text-lg sm:text-xl text-white/90 max-w-2xl leading-relaxed">
+            Paste your programming error and get instant beginner-friendly explanations, suggested fixes, and learning insights.
+          </p>
+          <p className="text-sm text-white/80 mt-4">✨ Powered by advanced error analysis</p>
+        </div>
       </div>
 
+      {/* Input Section */}
       <InputBox
         value={errorText}
         onValueChange={setErrorText}
@@ -81,16 +93,20 @@ const Home = () => {
         loading={loading}
       />
 
+      {/* Error Message */}
       {errorMsg && (
-        <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          {errorMsg}
+        <div className="mt-5 rounded-xl border-2 border-red-200 bg-red-50 p-4 flex items-start gap-3 animate-fade-in">
+          <FiAlertCircle className="text-red-600 text-xl flex-shrink-0 mt-0.5" />
+          <p className="text-sm text-red-700">{errorMsg}</p>
         </div>
       )}
 
+      {/* Loader */}
       {loading && <Loader />}
 
+      {/* Results */}
       {!loading && result && (
-        <div className="mt-5">
+        <div className="mt-8">
           <ResultTabs
             result={result}
             selectedTab={selectedTab}
@@ -99,15 +115,20 @@ const Home = () => {
         </div>
       )}
 
-      <div className="mt-8 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-        <h2 className="text-lg font-semibold">Quick Support</h2>
-        <p className="mt-2 text-sm text-gray-600">
-          Example to test:
-          <code className="ml-1 rounded bg-gray-100 px-2 py-1 text-xs">
-            IndexError: list index out of range
-          </code>
-        </p>
-      </div>
+      {/* Info Card */}
+      {!result && !loading && (
+        <div className="mt-10 rounded-2xl border border-indigo-200 bg-gradient-to-r from-indigo-50 to-purple-50 p-6 shadow-md hover:shadow-lg transition-shadow animate-fade-in">
+          <h3 className="text-lg font-bold text-indigo-900 flex items-center gap-2">
+            💡 How it works
+          </h3>
+          <ul className="mt-4 space-y-2 text-sm text-gray-700">
+            <li>✓ Paste any Python error message or traceback</li>
+            <li>✓ Get instant, beginner-friendly explanations</li>
+            <li>✓ See suggested fixes for common issues</li>
+            <li>✓ Learn best practices to avoid similar errors</li>
+          </ul>
+        </div>
+      )}
     </section>
   );
 };
