@@ -10,11 +10,13 @@ app = FastAPI(title="Bug Explainer AI")
 # allow frontend origin on localhost:3000 (create-react-app default)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# If you prefer more strict production security, replace "allow_origins=[\"*\"]" with explicit domains.
 
 
 @app.post("/explain", response_model=ErrorOutput)
