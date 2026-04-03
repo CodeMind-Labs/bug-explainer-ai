@@ -1,10 +1,10 @@
 import React from "react";
-import { FiZap, FiTarget, FiLightbulb } from "react-icons/fi";
+import { FiZap, FiTarget, FiTrendingUp } from "react-icons/fi";
 
 const tabItems = [
   { name: "Explanation", icon: FiZap, color: "from-yellow-500 to-orange-500" },
   { name: "Fix", icon: FiTarget, color: "from-green-500 to-emerald-500" },
-  { name: "Learning", icon: FiLightbulb, color: "from-blue-500 to-cyan-500" },
+  { name: "Learning", icon: FiTrendingUp, color: "from-blue-500 to-cyan-500" },
 ];
 
 const ResultTabs = ({ result, selectedTab, onTabChange }) => {

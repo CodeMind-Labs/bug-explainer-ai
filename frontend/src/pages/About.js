@@ -1,5 +1,5 @@
 import React from "react";
-import { FiRocket, FiZap, FiCode, FiHeart } from "react-icons/fi";
+import { FiTrendingUp, FiZap, FiCode, FiHeart } from "react-icons/fi";
 
 const About = () => (
   <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
@@ -18,7 +18,7 @@ const About = () => (
       {/* Feature 1 */}
       <div className="rounded-2xl border border-white/20 bg-white/80 backdrop-blur-sm p-8 shadow-lg hover:shadow-xl transition-all hover:scale-105 animate-fade-in">
         <div className="rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 p-4 w-fit mb-4">
-          <FiRocket className="text-white text-3xl" />
+          <FiTrendingUp className="text-white text-3xl" />
         </div>
         <h3 className="text-xl font-bold text-gray-800 mb-2">Smart Analysis</h3>
         <p className="text-gray-600">
