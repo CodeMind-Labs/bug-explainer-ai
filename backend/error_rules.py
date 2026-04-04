@@ -1,8 +1,115 @@
 # error_rules.py
-# Simple rule-based error explainer.
+# AI-powered error explainer with rule-based fallback.
 
+import os
+import json
+from typing import Optional
+from openai import OpenAI
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Initialize OpenAI client
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+def explain_error_with_ai(error_message: str) -> Optional[dict]:
+    """Use OpenAI to explain the error message."""
+    if not os.getenv("OPENAI_API_KEY"):
+        return None
+
+    try:
+        prompt = f"""
+You are an expert Python programming tutor. Explain this Python error in a beginner-friendly way.
+
+Error message: {error_message}
+
+Provide a JSON response with exactly these three fields:
+- "explanation": A clear, simple explanation of what this error means
+- "fix": Specific steps to fix this error
+- "learning": What the user should learn from this error to avoid it in the future
+
+Keep each field concise but helpful. Focus on being educational and encouraging.
+"""
+
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a helpful Python programming tutor who explains errors clearly."},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=500,
+            temperature=0.3
+        )
+
+        # Extract JSON from response
+        content = response.choices[0].message.content.strip()
+
+        # Try to parse as JSON
+        if content.startswith('{') and content.endswith('}'):
+            result = json.loads(content)
+            # Validate required fields
+            if all(key in result for key in ['explanation', 'fix', 'learning']):
+                return result
+
+        # If JSON parsing fails, extract manually
+        return _parse_ai_response(content)
+
+    except Exception as e:
+        print(f"AI API error: {e}")
+        return None
+
+def _parse_ai_response(content: str) -> dict:
+    """Parse AI response if JSON parsing fails."""
+    try:
+        # Simple parsing for common formats
+        lines = content.split('\n')
+        explanation = ""
+        fix = ""
+        learning = ""
+
+        current_section = None
+        for line in lines:
+            line = line.strip()
+            if line.lower().startswith('explanation:') or '"explanation":' in line.lower():
+                current_section = 'explanation'
+                explanation = line.split(':', 1)[1].strip().strip('"').strip(',')
+            elif line.lower().startswith('fix:') or '"fix":' in line.lower():
+                current_section = 'fix'
+                fix = line.split(':', 1)[1].strip().strip('"').strip(',')
+            elif line.lower().startswith('learning:') or '"learning":' in line.lower():
+                current_section = 'learning'
+                learning = line.split(':', 1)[1].strip().strip('"').strip(',')
+            elif current_section and line:
+                if current_section == 'explanation':
+                    explanation += " " + line.strip().strip('"').strip(',')
+                elif current_section == 'fix':
+                    fix += " " + line.strip().strip('"').strip(',')
+                elif current_section == 'learning':
+                    learning += " " + line.strip().strip('"').strip(',')
+
+        if explanation or fix or learning:
+            return {
+                "explanation": explanation or "AI explanation not available",
+                "fix": fix or "Check your code syntax and logic",
+                "learning": learning or "Practice debugging step by step"
+            }
+    except:
+        pass
+
+    return None
 
 def explain_error(error_message: str) -> dict:
+    """Return explanation, fix, and learning. Uses AI first, then rule-based fallback."""
+    # Try AI explanation first
+    ai_result = explain_error_with_ai(error_message)
+    if ai_result:
+        return ai_result
+
+    # Fallback to rule-based system
+    return explain_error_rule_based(error_message)
+
+def explain_error_rule_based(error_message: str) -> dict:
     """Return explanation, fix, and learning based on common Python error name hints."""
     # normalize
     text = error_message.strip()

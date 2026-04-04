@@ -10,6 +10,8 @@ const Home = () => {
   const [selectedTab, setSelectedTab] = useState("Explanation");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [apiKey, setApiKey] = useState("");
+  const [useAI, setUseAI] = useState(false);
 
   const samples = [
     "IndexError: list index out of range",
@@ -31,10 +33,15 @@ const Home = () => {
 
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || "/api";
 
+    const headers = { "Content-Type": "application/json" };
+    if (apiKey && useAI) {
+      headers["openai-api-key"] = apiKey;
+    }
+
     try {
       const resp = await fetch(`${apiBaseUrl}/explain`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: headers,
         body: JSON.stringify({ error: errorText }),
       });
 
@@ -64,6 +71,8 @@ const Home = () => {
     setErrorText("");
     setResult(null);
     setErrorMsg("");
+    setApiKey("");
+    setUseAI(false);
   };
 
   return (
@@ -94,6 +103,40 @@ const Home = () => {
         onFillSample={handleFillSample}
         loading={loading}
       />
+
+      {/* AI Settings */}
+      <div className="rounded-2xl border border-purple-200 bg-gradient-to-r from-purple-50 to-indigo-50 p-4 shadow-sm animate-fade-in">
+        <div className="flex items-center gap-3 mb-3">
+          <input
+            type="checkbox"
+            id="useAI"
+            checked={useAI}
+            onChange={(e) => setUseAI(e.target.checked)}
+            className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+          />
+          <label htmlFor="useAI" className="text-sm font-semibold text-purple-900 flex items-center gap-2">
+            🤖 Use AI for smarter explanations
+          </label>
+        </div>
+
+        {useAI && (
+          <div className="space-y-2">
+            <label className="block text-xs font-medium text-purple-700">
+              OpenAI API Key (optional - get from <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="underline hover:text-purple-800">OpenAI</a>)
+            </label>
+            <input
+              type="password"
+              value={apiKey}
+              onChange={(e) => setApiKey(e.target.value)}
+              placeholder="sk-..."
+              className="w-full px-3 py-2 text-sm border border-purple-300 rounded-lg bg-white/80 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none"
+            />
+            <p className="text-xs text-purple-600">
+              Your API key is only used for this request and never stored. Without it, the app uses rule-based explanations.
+            </p>
+          </div>
+        )}
+      </div>
 
       {/* Error Message */}
       {errorMsg && (

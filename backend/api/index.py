@@ -1,9 +1,14 @@
 import json
+import os
 from error_rules import explain_error
 from models import ErrorInput, ErrorOutput
 
 def handler(request):
     """Vercel serverless function handler for the explain endpoint."""
+
+    # Set OpenAI API key from environment if available
+    if hasattr(request, 'headers') and 'openai-api-key' in request.headers:
+        os.environ['OPENAI_API_KEY'] = request.headers['openai-api-key']
 
     # Only allow POST requests
     if request.method != 'POST':
@@ -44,9 +49,9 @@ def handler(request):
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'POST, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type'
+                'Access-Control-Allow-Headers': 'Content-Type, openai-api-key'
             },
-            'body': json.dumps(result.dict())
+            'body': json.dumps(result)
         }
 
     except json.JSONDecodeError:

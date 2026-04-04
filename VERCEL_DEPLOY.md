@@ -29,7 +29,14 @@ vercel
 - **In which directory is your code located?** → `./`
 
 ### 5. Configure Environment Variables (Optional)
-If you want to override the default API endpoint:
+
+#### For AI-powered explanations:
+```bash
+# Add OpenAI API key for AI explanations (optional)
+vercel env add OPENAI_API_KEY
+```
+
+#### For custom API endpoint:
 ```bash
 vercel env add REACT_APP_API_BASE_URL
 ```
@@ -37,7 +44,13 @@ Value: Leave empty (uses `/api` by default)
 
 ---
 
-## How It Works
+## Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `OPENAI_API_KEY` | Optional | Your OpenAI API key for AI-powered explanations |
+| `REACT_APP_API_BASE_URL` | Optional | API endpoint for the backend (default: `/api`) |
+| `OPENAI_MODEL` | Optional | AI model to use (default: gpt-3.5-turbo) |
 
 ### Frontend (React)
 - Built using `npm run build`

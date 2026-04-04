@@ -12,9 +12,9 @@ Paste any error message and get:
 
 ## 🚀 Features
 
-* 🧠 Beginner-friendly explanations
+* 🧠 **AI-Powered Explanations** - Uses OpenAI GPT for intelligent error analysis
 * ⚡ Fast and simple interface
-* 🔍 Rule-based error detection (expandable)
+* 🔍 Rule-based error detection (fallback when AI unavailable)
 * 🌱 Open for contributions
 
 ---
