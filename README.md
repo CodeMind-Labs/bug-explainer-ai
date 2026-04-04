@@ -49,25 +49,33 @@ git clone https://github.com/CodeMind-Labs/bug-explainer-ai.git
 cd bug-explainer-ai
 ```
 
----
+### 2. Local Development
 
-### 2. Backend Setup
-
+#### Backend Setup
 ```bash
 cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
----
-
-### 3. Frontend Setup
-
+#### Frontend Setup
 ```bash
 cd frontend
 npm install
 npm start
 ```
+
+### 3. Deployment
+
+#### 🚀 Deploy to Vercel (Recommended)
+```bash
+npm install -g vercel
+vercel
+```
+See [VERCEL_DEPLOY.md](VERCEL_DEPLOY.md) for detailed instructions.
+
+#### 📄 Deploy to GitHub Pages + External Backend
+See [DEPLOYMENT.md](DEPLOYMENT.md) for GitHub Pages deployment with Railway/Render backend.
 
 ---
 

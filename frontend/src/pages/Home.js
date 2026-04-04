@@ -29,7 +29,7 @@ const Home = () => {
     setLoading(true);
     setResult(null);
 
-    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || "http://127.0.0.1:8000";
+    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || "/api";
 
     try {
       const resp = await fetch(`${apiBaseUrl}/explain`, {

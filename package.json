@@ -1,0 +1,14 @@
+{
+  "name": "bug-explainer-ai",
+  "version": "1.0.0",
+  "description": "Bug Explainer AI - Full-stack application",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Build handled by vercel.json'",
+    "start": "vercel dev"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  }
+}
